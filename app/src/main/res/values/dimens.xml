@@ -1,0 +1,16 @@
+<resources>
+    <dimen name="app_bar_height">260dp</dimen>
+    <dimen name="content_margin">10dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+    <dimen name="content_vertical_margin">5dp</dimen>
+    <dimen name="fragment_info_title_bottom_margin">10dp</dimen>
+    <dimen name="app_bar_bottom_margin">10dp</dimen>
+    <dimen name="activity_main_toolbar_size">120dp</dimen>
+    <dimen name="activity_info_appbar_logo_size">50dp</dimen>
+    <dimen name="activity_info_appbar_logo_margin_bottom">5dp</dimen>
+    <dimen name="plate_input_heigth">56dp</dimen>
+    <dimen name="recent_view_car_logo_size">50dp</dimen>
+    <dimen name="color_lable_text_size">12sp</dimen>
+    <dimen name="color_label_margin_bottom">4dp</dimen>
+    <dimen name="recent_view_year_margin_left">4dp</dimen>
+</resources>

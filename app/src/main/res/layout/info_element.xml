@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+
+        <import type="android.view.ViewGroup.LayoutParams"/>
+
+        <variable
+            name="viewModel"
+            type="com.kiko.ukraine.platenumber.presentation.plateinfo.PlateInfoViewModel"/>
+
+        <variable
+            name="info"
+            type="com.kiko.ukraine.platenumber.presentation.plateinfo.entity.Info"/>
+    </data>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_width="@{info.fullSize ? LayoutParams.MATCH_PARENT : LayoutParams.WRAP_CONTENT}"
+        android:layout_marginLeft="@dimen/content_margin"
+        android:layout_marginTop="@dimen/content_vertical_margin"
+        android:layout_marginRight="@dimen/content_margin"
+        android:layout_marginBottom="@dimen/content_vertical_margin"
+        android:onLongClick="@{() -> viewModel.copyToBuffer(info.value)}"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/info_label"
+            style="@style/AppTheme.LabelListInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{info.label}" />
+
+        <TextView
+            android:id="@+id/info_text"
+            style="@style/AppTheme.ListInfoText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{info.value}" />
+    </LinearLayout>
+</layout>

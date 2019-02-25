@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="com.kiko.ukraine.platenumber.presentation.plateinfo.ui.Status"/>
+        <variable
+            name="viewModel"
+            type="com.kiko.ukraine.platenumber.presentation.plateinfo.PlateInfoViewModel"/>
+    </data>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/coordinator_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:context=".presentation.plateinfo.ui.PlateInfoActivity">
+
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_gravity="center"
+            android:visibility="gone"
+            app:visibleOrGone="@{viewModel.uiModel.status == Status.ERROR}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/ic_error_outline_black_24dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView2"
+                style="@style/AppTheme.TitleTextAppearance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:text="@{viewModel.uiModel.error}"
+                android:textColor="@color/colorPrimaryDark"
+                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:onClick="@{() -> viewModel.retry()}"
+                android:text="@string/retry_button_text"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        </android.support.constraint.ConstraintLayout>
+
+
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            app:visibleOrGone="@{viewModel.uiModel.status == Status.LOADING}"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/app_bar_height"
+            android:layout_marginBottom="@dimen/app_bar_bottom_margin"
+            android:fitsSystemWindows="true"
+            android:theme="@style/AppTheme.AppBarOverlay"
+            app:visible="@{viewModel.uiModel.status == Status.SUCCESS}">
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/toolbar_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                app:contentScrim="?attr/colorPrimary"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:title="@{viewModel.uiModel.data.getFullName()}"
+                app:toolbarId="@+id/toolbar">
+
+                <ImageView
+                    android:id="@+id/toolbar_bg_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/app_bar_height"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@null"
+                    android:scaleType="centerCrop"
+                    app:imageUrl="@{viewModel.uiModel.data.carPhotoUrl}"
+                    app:layout_collapseMode="parallax"
+                    app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/toolbar_gradient"
+                    app:layout_collapseMode="pin" />
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_collapseMode="pin"
+                    app:navigationIcon="?attr/homeAsUpIndicator"
+                    app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+
+                <ImageView
+                    android:id="@+id/car_logo"
+                    android:layout_width="@dimen/activity_info_appbar_logo_size"
+                    android:layout_height="@dimen/activity_info_appbar_logo_size"
+                    android:layout_gravity="end|bottom"
+                    android:layout_marginEnd="@dimen/content_margin"
+                    android:layout_marginRight="@dimen/content_margin"
+                    android:layout_marginBottom="@dimen/activity_info_appbar_logo_margin_bottom"
+                    app:imageUrl="@{viewModel.uiModel.data.logoUrl}" />
+
+            </android.support.design.widget.CollapsingToolbarLayout>
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/content_margin"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:visible="@{viewModel.uiModel.status == Status.SUCCESS}">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                    style="@style/AppTheme.CardView"
+                    android:visibility="gone"
+                    app:visibleOrGone="@{viewModel.uiModel.data.wanted}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:focusable="false">
+
+                    <TextView
+                        android:id="@+id/alert_text"
+                        style="@style/AppTheme.AlertTextAppearance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/content_margin"
+                        android:text="@string/alert_wanted" />
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    style="@style/AppTheme.CardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="false"
+                    android:focusable="false"
+                    tools:showIn="@layout/activity_plate_info">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="@dimen/content_margin"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/general_information_title"
+                            style="@style/AppTheme.TitleTextAppearance"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/Info_title_general_information" />
+
+                        <View
+                            style="@style/AppTheme.DivideLine"
+                            android:layout_marginStart="@dimen/content_margin"
+                            android:layout_marginLeft="@dimen/content_margin"
+                            android:layout_marginBottom="@dimen/fragment_info_title_bottom_margin" />
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/general_information_recyclerView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
+                            tools:listitem="@layout/info_element" />
+
+                        <TextView
+                            android:id="@+id/plate_number"
+                            style="@style/AppTheme.PlateNumberTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginEnd="@dimen/content_margin"
+                            android:layout_marginRight="@dimen/content_margin"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:onLongClick="@{() -> viewModel.copyToBuffer(viewModel.uiModel.data.number)}"
+                            android:foreground="?android:attr/selectableItemBackground"
+                            android:text="@{viewModel.uiModel.data.number}"
+                            android:textAlignment="center"
+                            android:visibility="visible" />
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    style="@style/AppTheme.CardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="false"
+                    android:focusable="false"
+                    tools:showIn="@layout/activity_plate_info">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="@dimen/content_margin"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/last_record_title"
+                            style="@style/AppTheme.TitleTextAppearance"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/last_record_title" />
+
+                        <View
+                            style="@style/AppTheme.DivideLine"
+                            android:layout_marginStart="@dimen/content_margin"
+                            android:layout_marginLeft="@dimen/content_margin"
+                            android:layout_marginBottom="@dimen/fragment_info_title_bottom_margin" />
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/last_record_recyclerView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
+                            tools:listitem="@layout/info_element" />
+
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </android.support.design.widget.CoordinatorLayout>
+</layout>

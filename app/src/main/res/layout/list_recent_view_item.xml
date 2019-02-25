@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="java.lang.Integer" />
+
+        <variable
+            name="plate"
+            type="com.kiko.ukraine.platenumber.domain.entity.ShortPlateInfo"/>
+
+        <variable
+            name="viewModel"
+            type="com.kiko.ukraine.platenumber.presentation.main.MainViewModel"/>
+    </data>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView"
+        style="@style/AppTheme.CardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> viewModel.navigateToInformation(plate.number)}"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        tools:showIn="@layout/activity_main">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/car_logo"
+                android:layout_width="@dimen/recent_view_car_logo_size"
+                android:layout_height="@dimen/recent_view_car_logo_size"
+                android:layout_margin="@dimen/content_margin"
+                android:scaleType="fitCenter"
+                app:imageUrl="@{plate.logoUrl}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/vendor"
+                style="@style/AppTheme.ListCarNameTextAppearance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/content_margin"
+                android:layout_marginLeft="@dimen/content_margin"
+                android:layout_marginTop="@dimen/content_margin"
+                android:text="@{plate.vendor}"
+                app:layout_constraintStart_toEndOf="@+id/car_logo"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/model"
+                style="@style/AppTheme.ListCarNameTextAppearance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/content_margin"
+                android:layout_marginLeft="@dimen/content_margin"
+                android:layout_marginBottom="@dimen/content_margin"
+                android:text="@{plate.model}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/car_logo"
+                app:layout_constraintTop_toBottomOf="@+id/vendor" />
+
+            <TextView
+                android:id="@+id/year"
+                style="@style/AppTheme.RecentViewYearTextAppearance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/recent_view_year_margin_left"
+                android:layout_marginLeft="@dimen/recent_view_year_margin_left"
+                android:layout_marginBottom="@dimen/content_margin"
+                android:text="@{Integer.toString(plate.year)}"
+                app:layout_constraintBottom_toBottomOf="@+id/model"
+                app:layout_constraintStart_toEndOf="@+id/model" />
+
+            <!-- TODO do with using LinerLayout -->
+            <TextView
+                android:id="@+id/plate_number"
+                style="@style/AppTheme.PlateNumberTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/content_margin"
+                android:layout_marginRight="@dimen/content_margin"
+                android:layout_marginBottom="@dimen/content_margin"
+                android:text="@{plate.number}"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+
+            <TextView
+                android:id="@+id/color_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/content_margin"
+                android:layout_marginEnd="@dimen/content_margin"
+                android:layout_marginRight="@dimen/content_margin"
+                android:layout_marginBottom="@dimen/color_label_margin_bottom"
+                android:fontFamily="@font/roboto"
+                android:text="@string/color"
+                android:textColor="@color/color_lable_color"
+                android:textSize="@dimen/color_lable_text_size"
+                app:layout_constraintBottom_toTopOf="@+id/plate_number"
+                app:layout_constraintEnd_toStartOf="@+id/car_color"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <ImageView
+                android:id="@+id/car_color"
+                android:layout_width="21dp"
+                android:layout_height="21dp"
+                app:circleBackgroundColor='@{"#ddd555"}'
+                android:layout_marginTop="@dimen/content_margin"
+                android:layout_marginEnd="@dimen/content_margin"
+                android:layout_marginRight="@dimen/content_margin"
+                android:background="@drawable/solid_circle_with_stroke"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.v7.widget.CardView>
+</layout>
